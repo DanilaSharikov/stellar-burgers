@@ -33,8 +33,10 @@ beforeEach(() => {
 
 describe('Ingredient Management in Constructor', () => {
   it('should increment ingredient counter', () => {
+    cy.get('.constructor').should('not.contain', 'Кристалл');
     cy.get(CRYSTAL_INGREDIENT).children('button').click();
-    cy.get(CRYSTAL_INGREDIENT).find('.counter__num').contains('1');
+    cy.get('.constructor').should('contain', 'Кристалл');
+
   });
 
   describe('Burger Assembly Process', () => {
@@ -44,8 +46,13 @@ describe('Ingredient Management in Constructor', () => {
     });
 
     it('should add sauce before main ingredient', () => {
+      cy.get('.constructor').should('not.contain', '643d69a5c3f7b9001cfa0945');
       cy.get(ANTARIAN_SAUCE).children('button').click();
+      cy.get('.constructor').should('contain', '643d69a5c3f7b9001cfa0945');
+
+      cy.get('.constructor').should('not.contain', '643d69a5c3f7b9001cfa0948');
       cy.get(CRYSTAL_INGREDIENT).children('button').click();
+      cy.get('.constructor').should('contain', '643d69a5c3f7b9001cfa0948');
     });
   });
 
@@ -98,6 +105,7 @@ describe('Order Processing', () => {
       cy.contains(orderNumber.toString(), { timeout: 10000 })
         .should('exist')
         .and('be.visible');
+      cy.get('.constructor').children().should('have.length', 0);
     });
   });
 });
@@ -108,10 +116,9 @@ describe('Ingredient Modal Windows', () => {
   });
 
   it('should display ingredient details', () => {
-    cy.get('@modal').should('be.empty');
+    cy.get('@modal').should('not.exist');
     cy.get(CRYSTAL_INGREDIENT).children('a').click();
-    cy.get('@modal').should('not.be.empty');
-    cy.url().should('include', '643d69a5c3f7b9001cfa0948');
+    cy.get('@modal').should('exist').and('contain', '643d69a5c3f7b9001cfa0948');
   });
 
   it('should close modal with button', () => {
