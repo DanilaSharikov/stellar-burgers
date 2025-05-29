@@ -116,9 +116,11 @@ describe('Ingredient Modal Windows', () => {
   });
 
   it('should display ingredient details', () => {
-    cy.get('@modal').should('not.exist');
+    cy.get('@modal').should('not.be.visible');
     cy.get(CRYSTAL_INGREDIENT).children('a').click();
-    cy.get('@modal').should('exist').and('contain', '643d69a5c3f7b9001cfa0948');
+    cy.get('@modal')
+      .should('be.visible')
+      .and('contain', '643d69a5c3f7b9001cfa0948');
   });
 
   it('should close modal with button', () => {
